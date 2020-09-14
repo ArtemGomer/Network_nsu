@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class MyApplication {
 
+    private final int UPDATE_TIME = 10000;
     private final Sender sender;
     private final Receiver receiver;
     private final HashMap<String, Long> connections = new HashMap<>();
@@ -27,14 +28,14 @@ public class MyApplication {
         }
     }
 
-    public void endWork() throws IOException {
+    public void endWork() {
         sender.close();
         receiver.close();
     }
 
     private void updateConnections() {
         int oldSize = connections.size();
-        connections.values().removeIf(n -> (System.currentTimeMillis() - n > 10000));
+        connections.values().removeIf(n -> (System.currentTimeMillis() - n > UPDATE_TIME));
         if (oldSize != connections.size()) {
             isChanged = true;
         }

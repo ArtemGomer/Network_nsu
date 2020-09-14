@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.HashMap;
 
 public class Receiver {
+    private final int SOCKET_TIMEOUT = 5000;
     private final MulticastSocket multicastSocket;
     private final byte[] buffer;
     private final InetAddress groupAddress;
@@ -19,7 +20,7 @@ public class Receiver {
 public boolean receive(HashMap<String, Long> connections) throws IOException {
         boolean isChanged = false;
         try {
-            multicastSocket.setSoTimeout(5000);
+            multicastSocket.setSoTimeout(SOCKET_TIMEOUT);
             while (true) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 multicastSocket.receive(packet);
@@ -36,8 +37,14 @@ public boolean receive(HashMap<String, Long> connections) throws IOException {
         }
     }
 
-    public void close() throws IOException {
-        multicastSocket.leaveGroup(groupAddress);
-        multicastSocket.close();
+    public void close() {
+        try {
+            multicastSocket.leaveGroup(groupAddress);
+        } catch (IOException ex) {
+            System.err.println("Can not leave group");
+            ex.printStackTrace();
+        } finally {
+            multicastSocket.close();
+        }
     }
 }

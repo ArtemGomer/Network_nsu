@@ -7,11 +7,14 @@ public class Main {
             System.err.println("Bad format of input");
             return;
         }
+        MyApplication myApplication = null;
         try {
-            MyApplication myApplication = new MyApplication(args[0]);
+            myApplication = new MyApplication(args[0]);
             myApplication.startWork();
-            myApplication.endWork();
         } catch (IOException ex) {
+            if (myApplication != null) {
+                myApplication.endWork();
+            }
             System.err.println("Some errors occurred");
             ex.printStackTrace();
         }
