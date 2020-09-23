@@ -1,4 +1,5 @@
 import myApplication.MyApplication;
+
 import java.io.IOException;
 
 public class Main {
@@ -10,13 +11,19 @@ public class Main {
         MyApplication myApplication = null;
         try {
             myApplication = new MyApplication(args[0]);
+            System.out.println("Type 'end' to stop app!");
+        } catch (IOException ex) {
+            System.err.println("Can not create myApplication");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        try {
             myApplication.startWork();
         } catch (IOException ex) {
-            if (myApplication != null) {
-                myApplication.endWork();
-            }
             System.err.println("Some errors occurred");
             ex.printStackTrace();
+        } finally {
+            myApplication.endWork();
         }
     }
 }

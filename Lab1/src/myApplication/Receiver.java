@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.HashMap;
 
 public class Receiver {
-    private final int SOCKET_TIMEOUT = 5000;
+    private final int SOCKET_TIMEOUT = 1000;
     private final MulticastSocket multicastSocket;
     private final byte[] buffer;
     private final InetAddress groupAddress;

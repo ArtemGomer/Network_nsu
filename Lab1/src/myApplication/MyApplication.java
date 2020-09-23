@@ -2,10 +2,11 @@ package myApplication;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class MyApplication {
 
-    private final int UPDATE_TIME = 10000;
+    private final int UPDATE_TIME = 5000;
     private final Sender sender;
     private final Receiver receiver;
     private final HashMap<String, Long> connections = new HashMap<>();
@@ -17,7 +18,14 @@ public class MyApplication {
     }
 
     public void startWork() throws IOException {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
+            if (System.in.available() != 0) {
+                String word = scanner.next();
+                if (word.equalsIgnoreCase("end")) {
+                    break;
+                }
+            }
             sender.send("GOT MESSAGE");
             isChanged = receiver.receive(connections);
             updateConnections();
