@@ -14,7 +14,12 @@ public class MyApplication implements AutoCloseable{
 
     public MyApplication(String multicastAddress) throws IOException {
         sender = new Sender(multicastAddress);
-        receiver = new Receiver(multicastAddress);
+        try {
+            receiver = new Receiver(multicastAddress);
+        } catch (IOException ex) {
+            sender.close();
+            throw ex;
+        }
     }
 
     public void startWork() throws IOException {

@@ -11,7 +11,7 @@ public class Main {
         try (MyApplication myApplication = new MyApplication(args[0])) {
             myApplication.startWork();
         } catch (IOException ex) {
-            System.err.println("Some errors occurred");
+            System.err.println("Can not create application!");
             ex.printStackTrace();
         }
     }

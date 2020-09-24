@@ -9,7 +9,12 @@ public class Sender {
 
     public Sender(String groupAddress) throws IOException {
         datagramSocket = new DatagramSocket();
-        this.groupAddress = InetAddress.getByName(groupAddress);
+        try {
+            this.groupAddress = InetAddress.getByName(groupAddress);
+        } catch (IOException ex) {
+            datagramSocket.close();
+            throw ex;
+        }
     }
 
     public void send(String message) throws IOException {
