@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class MyApplication {
+public class MyApplication implements AutoCloseable{
 
     private final int UPDATE_TIME = 5000;
     private final Sender sender;
@@ -36,11 +36,6 @@ public class MyApplication {
         }
     }
 
-    public void endWork() {
-        sender.close();
-        receiver.close();
-    }
-
     private void updateConnections() {
         int oldSize = connections.size();
         connections.values().removeIf(n -> (System.currentTimeMillis() - n > UPDATE_TIME));
@@ -55,5 +50,11 @@ public class MyApplication {
             System.out.println(address);
         }
         System.out.println("----------------------");
+    }
+
+    @Override
+    public void close() {
+        sender.close();
+        receiver.close();
     }
 }

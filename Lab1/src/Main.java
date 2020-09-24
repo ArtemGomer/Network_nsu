@@ -8,22 +8,11 @@ public class Main {
             System.err.println("Bad format of input");
             return;
         }
-        MyApplication myApplication = null;
-        try {
-            myApplication = new MyApplication(args[0]);
-            System.out.println("Type 'end' to stop app!");
-        } catch (IOException ex) {
-            System.err.println("Can not create myApplication");
-            ex.printStackTrace();
-            System.exit(1);
-        }
-        try {
+        try (MyApplication myApplication = new MyApplication(args[0])) {
             myApplication.startWork();
         } catch (IOException ex) {
             System.err.println("Some errors occurred");
             ex.printStackTrace();
-        } finally {
-            myApplication.endWork();
         }
     }
 }
