@@ -13,8 +13,13 @@ public class Receiver {
     public Receiver(String address) throws IOException {
         buffer = new byte[256];
         multicastSocket = new MulticastSocket(4446);
-        groupAddress = InetAddress.getByName(address);
-        multicastSocket.joinGroup(groupAddress);
+        try {
+            groupAddress = InetAddress.getByName(address);
+            multicastSocket.joinGroup(groupAddress);
+        } catch (IOException ex) {
+            multicastSocket.close();
+            throw ex;
+        }
     }
 
 public boolean receive(HashMap<String, Long> connections) throws IOException {
