@@ -20,18 +20,18 @@ public class Client implements AutoCloseable {
         byte[] buffer = new byte[4096];
         try (DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
              DataInputStream inputStream = new DataInputStream(socket.getInputStream())) {
-            logger.log(Level.INFO,"Sending length of file name!");
+            logger.log(Level.INFO, "Sending length of file name!");
             outputStream.writeInt(file.getName().length());
             if (inputStream.readBoolean()) {
                 outputStream.writeUTF(file.getName());
             } else {
-                logger.log(Level.INFO,"Name of the file is too big!");
+                logger.log(Level.INFO, "Name of the file is too big!");
                 return;
             }
-            logger.log(Level.INFO,"Sending length of file!");
+            logger.log(Level.INFO, "Sending length of file!");
             outputStream.writeLong(file.length());
             if (inputStream.readBoolean()) {
-                logger.log(Level.INFO,"Start to send file.");
+                logger.log(Level.INFO, "Start to send file.");
                 Checksum hash = new Adler32();
                 try (FileInputStream fileInputStream = new FileInputStream(file)) {
                     int readBytes;
@@ -41,19 +41,21 @@ public class Client implements AutoCloseable {
                         outputStream.flush();
                     }
                     logger.log(Level.INFO, "All data was sent!");
-                    outputStream.writeLong(hash.getValue());
                     if (inputStream.readBoolean()) {
-                        logger.log(Level.INFO, "File was successfully sent!");
-                        System.out.println("SUCCESS!!!");
-                    } else {
-                        logger.log(Level.INFO, "File was not sent!");
-                        System.out.println("FAILURE");
+                        long serverHash = inputStream.readLong();
+                        if (serverHash == hash.getValue()) {
+                            logger.log(Level.INFO, "File was successfully sent!");
+                            System.out.println("SUCCESS!!!");
+                        } else {
+                            logger.log(Level.INFO, "File was not sent!");
+                            System.out.println("FAILURE");
+                        }
                     }
                 } catch (FileNotFoundException ex) {
-                    logger.log(Level.SEVERE,"Can not find file!");
+                    logger.log(Level.SEVERE, "Can not find file!");
                 }
             } else {
-                logger.log(Level.INFO,"File is too big!");
+                logger.log(Level.INFO, "File is too big!");
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Some IO errors occurred", ex);

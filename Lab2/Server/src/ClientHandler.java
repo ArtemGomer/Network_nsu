@@ -63,10 +63,9 @@ public class ClientHandler implements Runnable, Closeable {
                 }
             }
             logger.log(Level.INFO, "All data was received!");
-            long clientHash = socketInputStream.readLong();
-            long ourHash = hash.getValue();
-            if (clientFileSize == allBytes && clientHash == ourHash) {
+            if (clientFileSize == allBytes) {
                 socketOutputStream.writeBoolean(true);
+                socketOutputStream.writeLong(hash.getValue());
             } else {
                 logger.log(Level.WARNING, "Size of file is wrong.!");
                 socketOutputStream.writeBoolean(false);
