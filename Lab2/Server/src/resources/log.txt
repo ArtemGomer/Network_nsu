@@ -1,0 +1,2 @@
+сент. 27, 2020 5:34:54 PM Main main
+INFO: Server was successfully created!
