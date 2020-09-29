@@ -1,11 +1,13 @@
+import java.io.File;
 import java.io.IOException;
+import java.nio.channels.FileLockInterruptionException;
 import java.util.logging.*;
 
 public class Main {
     private final static Logger logger = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) {
         try {
-            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("resources/log.properties"));
+            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("resources" + File.separator + "log.properties"));
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Can not read configuration", ex);
         }

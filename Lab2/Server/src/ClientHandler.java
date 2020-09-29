@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
+import java.util.zip.Checksum;
 
 public class ClientHandler implements Runnable, Closeable {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
@@ -24,7 +26,7 @@ public class ClientHandler implements Runnable, Closeable {
                 socketOutputStream.writeBoolean(true);
             }
             String fileName = socketInputStream.readUTF();
-            long clientFileSize = 0;
+            long clientFileSize;
             if ((clientFileSize = socketInputStream.readLong()) > 1e12) {
                 socketOutputStream.writeBoolean(false);
                 logger.log(Level.WARNING, "File is too big!");
@@ -34,25 +36,41 @@ public class ClientHandler implements Runnable, Closeable {
                 socketOutputStream.writeBoolean(true);
             }
             File file = new File("uploads" + File.separator + fileName);
-            long allBytes = 0;
             logger.log(Level.INFO, "Start to receive data.");
+            Checksum hash = new Adler32();
+            long allBytes = 0;
+            long instantBytes = 0;
+            long currentPeriod;
+            long startTime = System.currentTimeMillis();
             try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
                 int readBytes;
                 byte[] buffer = new byte[4096];
                 while (allBytes < clientFileSize) {
                     readBytes = socketInputStream.read(buffer);
                     allBytes += readBytes;
-                    System.out.println(readBytes);
+                    instantBytes += readBytes;
+                    if ((currentPeriod = System.currentTimeMillis() - startTime) > 3000) {
+                        printInstantSpeed(currentPeriod, instantBytes);
+                        printAverageSpeed(System.currentTimeMillis() - startTime, allBytes);
+                        instantBytes = 0;
+                    }
+                    hash.update(buffer, 0, readBytes);
                     fileOutputStream.write(buffer, 0, readBytes);
+                }
+                if ((currentPeriod = System.currentTimeMillis() - startTime) < 3000) {
+                    printInstantSpeed(currentPeriod, allBytes);
+                    printAverageSpeed(currentPeriod, allBytes);
                 }
             }
             logger.log(Level.INFO, "All data was received!");
-            if (clientFileSize != allBytes) {
+            long clientHash = socketInputStream.readLong();
+            long ourHash = hash.getValue();
+            if (clientFileSize == allBytes && clientHash == ourHash) {
+                socketOutputStream.writeBoolean(true);
+            } else {
                 logger.log(Level.WARNING, "Size of file is wrong.!");
                 socketOutputStream.writeBoolean(false);
                 close();
-            } else {
-                socketOutputStream.writeBoolean(true);
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Some IO errors occurred", ex);
@@ -68,5 +86,13 @@ public class ClientHandler implements Runnable, Closeable {
             logger.log(Level.INFO, "Can not close client socket.");
         }
         logger.log(Level.INFO, "Server client was closed.");
+    }
+
+    public void printAverageSpeed(long period, long bytes) {
+        System.out.println("Average speed of [" + clientSocket.getInetAddress() + "] = " + ((double)bytes/period) * 1000 / 1e6 + " MB/s");
+    }
+
+    public void printInstantSpeed(long period, long bytes) {
+        System.out.println("Instant speed of [" + clientSocket.getInetAddress() + "] = " + ((double)bytes/period) * 1000 / 1e6 + " MB/s");
     }
 }

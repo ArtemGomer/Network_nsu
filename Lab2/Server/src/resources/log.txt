@@ -1,16 +1,66 @@
-сент. 29, 2020 7:32:08 PM Server <init>
+сент. 29, 2020 9:23:05 PM Server <init>
 INFO: Trying to open server socket
-сент. 29, 2020 7:32:08 PM Server <init>
+сент. 29, 2020 9:23:05 PM Server <init>
 INFO: Socket was successfully opened
-сент. 29, 2020 7:32:08 PM Main main
+сент. 29, 2020 9:23:05 PM Main main
 INFO: Server was successfully created!
-сент. 29, 2020 7:32:08 PM Server start
+сент. 29, 2020 9:23:05 PM Server run
 INFO: Creating client handler.
-сент. 29, 2020 7:32:13 PM Server start
+сент. 29, 2020 9:23:11 PM Server run
 INFO: Handler started.
-сент. 29, 2020 7:32:13 PM Server start
+сент. 29, 2020 9:23:11 PM Server run
 INFO: Creating client handler.
-сент. 29, 2020 7:32:13 PM ClientHandler run
+сент. 29, 2020 9:23:11 PM ClientHandler run
 INFO: Start to receive data.
-сент. 29, 2020 7:32:13 PM ClientHandler run
+сент. 29, 2020 9:23:11 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 9:23:13 PM Server run
+INFO: Handler started.
+сент. 29, 2020 9:23:13 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 9:23:13 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 9:23:13 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 9:23:17 PM Server run
+INFO: Handler started.
+сент. 29, 2020 9:23:17 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 9:23:17 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 9:23:17 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 9:24:37 PM Server run
+INFO: Handler started.
+сент. 29, 2020 9:24:37 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 9:24:37 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 9:24:37 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 9:24:39 PM Server run
+INFO: Handler started.
+сент. 29, 2020 9:24:39 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 9:24:39 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 9:24:39 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 9:25:27 PM ClientHandler run
+SEVERE: Some IO errors occurred
+java.net.SocketException: Connection reset
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:186)
+	at java.base/java.net.SocketInputStream.read(SocketInputStream.java:140)
+	at java.base/java.io.DataInputStream.readFully(DataInputStream.java:200)
+	at java.base/java.io.DataInputStream.readLong(DataInputStream.java:421)
+	at ClientHandler.run(ClientHandler.java:69)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+
+сент. 29, 2020 9:25:28 PM Server run
+INFO: Handler started.
+сент. 29, 2020 9:25:28 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 9:25:28 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 9:25:28 PM ClientHandler run
 INFO: All data was received!

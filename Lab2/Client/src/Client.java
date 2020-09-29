@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
+import java.util.zip.Checksum;
 
 public class Client implements AutoCloseable {
     private final static Logger logger = Logger.getLogger(Client.class.getName());
@@ -30,13 +32,16 @@ public class Client implements AutoCloseable {
             outputStream.writeLong(file.length());
             if (inputStream.readBoolean()) {
                 logger.log(Level.INFO,"Start to send file.");
+                Checksum hash = new Adler32();
                 try (FileInputStream fileInputStream = new FileInputStream(file)) {
                     int readBytes;
                     while ((readBytes = fileInputStream.read(buffer)) > 0) {
+                        hash.update(buffer, 0, readBytes);
                         outputStream.write(buffer, 0, readBytes);
                         outputStream.flush();
                     }
                     logger.log(Level.INFO, "All data was sent!");
+                    outputStream.writeLong(hash.getValue());
                     if (inputStream.readBoolean()) {
                         logger.log(Level.INFO, "File was successfully sent!");
                         System.out.println("SUCCESS!!!");
@@ -58,9 +63,9 @@ public class Client implements AutoCloseable {
     @Override
     public void close() {
         try {
-            logger.log(Level.INFO, "Trying to close socket");
+            logger.log(Level.INFO, "Trying to close client socket");
             socket.close();
-            logger.log(Level.INFO, "Socket was successfully closed");
+            logger.log(Level.INFO, "Client socket was successfully closed");
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Can not close socket", ex);
         }

@@ -2,10 +2,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Server implements AutoCloseable {
+public class Server extends Thread implements AutoCloseable {
     private final ServerSocket serverSocket;
     private final static Logger logger = Logger.getLogger(Server.class.getName());
     private final File dir;
@@ -17,7 +18,8 @@ public class Server implements AutoCloseable {
         dir = new File("uploads");
     }
 
-    public void start() {
+    @Override
+    public void run() {
         try {
             if (!dir.exists()) {
                 if (!dir.mkdir()) {
@@ -31,7 +33,7 @@ public class Server implements AutoCloseable {
                     return;
                 }
             }
-            while (true) {
+            while (!isInterrupted()) {
                 logger.log(Level.INFO, "Creating client handler.");
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(clientSocket);
@@ -39,12 +41,12 @@ public class Server implements AutoCloseable {
                 handlerThread.start();
                 logger.log(Level.INFO, "Handler started.");
             }
-        } catch (
-                IOException ex) {
+        } catch (SocketException ex) {
+            logger.log(Level.INFO, "Stop of server!");
+        } catch (IOException ex) {
             logger.log(Level.SEVERE, "Server can not accept connections!");
         }
     }
-
 
     @Override
     public void close() {
@@ -54,6 +56,6 @@ public class Server implements AutoCloseable {
         } catch (IOException ex) {
             logger.log(Level.INFO, "Can not close server socket.");
         }
-        logger.log(Level.INFO, "Server server was closed.");
+        logger.log(Level.INFO, "Server socket was closed.");
     }
 }

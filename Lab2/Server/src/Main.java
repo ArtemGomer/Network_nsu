@@ -1,4 +1,6 @@
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -7,7 +9,7 @@ public class Main {
     private final static Logger logger = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) {
         try {
-            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("resources/log.properties"));
+            LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("resources" + File.separator + "log.properties"));
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Can not read configuration!", ex);
         }
@@ -25,6 +27,13 @@ public class Main {
         try (Server server = new Server(port)) {
             logger.log(Level.INFO, "Server was successfully created!");
             server.start();
+            Scanner scanner = new Scanner(System.in);
+            while (scanner.hasNext()) {
+                String word = scanner.next();
+                if (word.equalsIgnoreCase("end")) {
+                    return;
+                }
+            }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Can not create server!");
             System.exit(1);
