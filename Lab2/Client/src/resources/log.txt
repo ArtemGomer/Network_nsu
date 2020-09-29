@@ -1,18 +1,22 @@
-сент. 27, 2020 5:27:27 PM Main main
+сент. 29, 2020 7:32:13 PM Main main
 INFO: Trying to create client!
-сент. 27, 2020 5:27:29 PM Main main
-SEVERE: Can not create client!
-java.net.ConnectException: Connection refused: connect
-	at java.base/java.net.PlainSocketImpl.connect0(Native Method)
-	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:101)
-	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
-	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:242)
-	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:403)
-	at java.base/java.net.Socket.connect(Socket.java:591)
-	at java.base/java.net.Socket.connect(Socket.java:540)
-	at java.base/java.net.Socket.<init>(Socket.java:436)
-	at java.base/java.net.Socket.<init>(Socket.java:213)
-	at Client.<init>(Client.java:10)
-	at Main.main(Main.java:25)
-
+сент. 29, 2020 7:32:13 PM Client <init>
+INFO: Trying to open socket: 127.0.0.1:4446
+сент. 29, 2020 7:32:13 PM Client <init>
+INFO: Socket was successfully opened
+сент. 29, 2020 7:32:13 PM Main main
+INFO: Client was successfully created!
+сент. 29, 2020 7:32:13 PM Client start
+INFO: Sending length of file name!
+сент. 29, 2020 7:32:13 PM Client start
+INFO: Sending length of file!
+сент. 29, 2020 7:32:13 PM Client start
+INFO: Start to send file.
+сент. 29, 2020 7:32:13 PM Client start
+INFO: All data was sent!
+сент. 29, 2020 7:32:13 PM Client start
+INFO: File was successfully sent!
+сент. 29, 2020 7:32:13 PM Client close
+INFO: Trying to close socket
+сент. 29, 2020 7:32:13 PM Client close
+INFO: Socket was successfully closed

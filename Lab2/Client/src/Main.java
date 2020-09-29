@@ -21,8 +21,9 @@ public class Main {
             System.exit(1);
         }
         logger.log(Level.INFO, "Trying to create client!");
-        try (Client client = new Client(args[0], port, args[2])) {
+        try (Client client = new Client(args[0], port)) {
             logger.log(Level.INFO, "Client was successfully created!");
+            client.start(args[2]);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Can not create client!", ex);
             ex.printStackTrace();
