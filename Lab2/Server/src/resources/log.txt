@@ -1,0 +1,22 @@
+сент. 29, 2020 10:50:31 PM Server <init>
+INFO: Trying to open server socket
+сент. 29, 2020 10:50:31 PM Server <init>
+INFO: Socket was successfully opened
+сент. 29, 2020 10:50:31 PM Main main
+INFO: Server was successfully created!
+сент. 29, 2020 10:50:31 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 10:50:38 PM Server run
+INFO: Handler started.
+сент. 29, 2020 10:50:38 PM Server run
+INFO: Creating client handler.
+сент. 29, 2020 10:50:38 PM ClientHandler run
+INFO: Start to receive data.
+сент. 29, 2020 10:50:39 PM ClientHandler run
+INFO: All data was received!
+сент. 29, 2020 10:50:44 PM Server close
+INFO: Trying to close server socket.
+сент. 29, 2020 10:50:44 PM Server close
+INFO: Server socket was closed.
+сент. 29, 2020 10:50:44 PM Server run
+INFO: Stop of server!
