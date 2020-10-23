@@ -12,9 +12,8 @@ public class ClientMain {
                 String name = args[0];
                 if (args.length == 3) {
                     try {
-                        ChatClient client = new ChatClient(name, port, lossPercentage);
-                        //work of client
-                        //client can be a thread
+                        ChatClient chatClient = new ChatClient(name, port, lossPercentage);
+                        chatClient.start();
                     } catch (SocketException ex) {
                         System.err.println("Can not create client.");
                         ex.printStackTrace();
@@ -26,10 +25,10 @@ public class ClientMain {
                         String neighbourIP = args[3];
                         ChatClient chatClient = new ChatClient(name, port, lossPercentage, neighbourIP,
                                 neighbourPort);
-                        //work of client
-                        //client can be a thread
+                        chatClient.start();
                     } catch (NumberFormatException ex) {
                         System.err.println("Can not convert port or lossPercentage.");
+                        ex.printStackTrace();
                         System.exit(1);
                     } catch (IOException ex) {
                         System.err.println("Can not create client.");
@@ -39,6 +38,7 @@ public class ClientMain {
                 }
             } catch (NumberFormatException ex) {
                 System.err.println("Can not convert port or lossPercentage.");
+                ex.printStackTrace();
                 System.exit(1);
             }
         } else {
