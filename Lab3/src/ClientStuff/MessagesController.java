@@ -10,10 +10,13 @@ public class MessagesController {
 
     public void addMessage(String uuid, String message) {
         messages.put(uuid, message);
+        messagesStat.put(uuid, 0);
     }
 
-    public void removeMessage(String uuid) {
-        messages.remove(uuid);
+    public void removeMessageIfZero(String uuid) {
+        if (messagesStat.get(uuid) == 0) {
+            messages.remove(uuid);
+        }
     }
 
     public String getMessage(String uuid) {
@@ -21,11 +24,7 @@ public class MessagesController {
     }
 
     public void increaseStat(String uuid) {
-        if (!messagesStat.containsKey(uuid)) {
-            messagesStat.put(uuid, 1);
-        } else {
-            messagesStat.put(uuid, messagesStat.get(uuid) + 1);
-        }
+        messagesStat.put(uuid, messagesStat.get(uuid) + 1);
     }
 
     public void decreaseStat(String uuid) {

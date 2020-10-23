@@ -22,7 +22,6 @@ public class ClientSender {
         byte[] buffer = ("MESSAGE:" + uuid + ":" + messagesController.getMessage(uuid)).getBytes();
         try {
             for (String neighbourAddress : neighbours) {
-                System.out.println(neighbourAddress);
                 String[] info = neighbourAddress.split(":");
                 int port = Integer.parseInt(info[1]);
                 if (!(info[0].equals(notIP) && notPort == port)) {
@@ -32,6 +31,7 @@ public class ClientSender {
                     messagesController.increaseStat(uuid);
                 }
             }
+            messagesController.removeMessageIfZero(uuid);
         } catch (IOException ex) {
             System.err.println("Some I/O errors occurred.");
             ex.printStackTrace();
