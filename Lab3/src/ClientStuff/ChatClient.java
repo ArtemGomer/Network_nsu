@@ -32,7 +32,7 @@ public class ChatClient implements Closeable {
         while (scanner.hasNext()) {
             String message = scanner.nextLine();
             if (message.equals("#EXIT")) {
-                this.sendExitMessages();
+                sender.sendExitMessages();
                 this.close();
                 return;
             }
@@ -40,27 +40,6 @@ public class ChatClient implements Closeable {
             String fullMessage = name + ":" + message;
             messagesController.addMessage(uuid, fullMessage);
             sender.sendMessageToAll(uuid, null, -1);
-        }
-    }
-
-    private void sendExitMessages() {
-        if (neighbours.size() > 0) {
-            String depute = neighbours.get(0);
-            String message = "EXIT:" + depute;
-            byte[] buffer = message.getBytes();
-            try {
-                for (String neighbour : neighbours) {
-                    String[] info = neighbour.split(":");
-                    String IP = info[0];
-                    int port = Integer.parseInt(info[1]);
-                    InetAddress inetAddress = InetAddress.getByName(IP);
-                    DatagramPacket packet = new DatagramPacket(buffer, 0, buffer.length, inetAddress, port);
-                    socket.send(packet);
-                }
-            } catch (IOException ex) {
-                System.err.println("Some I/O errors occurred.");
-                ex.printStackTrace();
-            }
         }
     }
 
