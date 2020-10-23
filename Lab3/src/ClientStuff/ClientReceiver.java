@@ -29,8 +29,9 @@ public class ClientReceiver extends Thread {
     public void run() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-        while (!isInterrupted()) {
-            try {
+        try {
+            while (!isInterrupted()) {
+
                 socket.receive(packet);
                 InetAddress senderIP = packet.getAddress();
                 int senderPort = packet.getPort();
@@ -53,16 +54,17 @@ public class ClientReceiver extends Thread {
                         neighbours.remove(senderIP.toString().substring(1) + ":" + senderPort);
                         String localAddress = InetAddress.getLocalHost().getHostAddress() + ":" + socket.getLocalPort();
                         if (!body.equals(localAddress)) {
-                            neighbours.add(data);
+                            neighbours.add(body);
                         }
                         break;
                 }
-            } catch (SocketException ignored) {
-                return;
-            } catch (IOException ex) {
-                System.err.println("Some I/) errors occurred!");
-                ex.printStackTrace();
+
             }
+        } catch (SocketException ignored) {
+
+        } catch (IOException ex) {
+            System.err.println("Some I/) errors occurred!");
+            ex.printStackTrace();
         }
     }
 

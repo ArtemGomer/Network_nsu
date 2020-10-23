@@ -20,8 +20,9 @@ public class ClientSender {
 
     public void sendMessageToAll(String uuid, String notIP, int notPort) {
         byte[] buffer = ("MESSAGE:" + uuid + ":" + messagesController.getMessage(uuid)).getBytes();
-        for (String neighbourAddress : neighbours) {
-            try {
+        try {
+            for (String neighbourAddress : neighbours) {
+                System.out.println(neighbourAddress);
                 String[] info = neighbourAddress.split(":");
                 int port = Integer.parseInt(info[1]);
                 if (!(info[0].equals(notIP) && notPort == port)) {
@@ -30,10 +31,10 @@ public class ClientSender {
                     socket.send(packet);
                     messagesController.increaseStat(uuid);
                 }
-            } catch (IOException ex) {
-                System.err.println("Some I/O errors occurred.");
-                ex.printStackTrace();
             }
+        } catch (IOException ex) {
+            System.err.println("Some I/O errors occurred.");
+            ex.printStackTrace();
         }
     }
 
