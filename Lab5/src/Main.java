@@ -15,10 +15,6 @@ public class Main {
         } catch (NumberFormatException ex) {
             System.err.println("Bad input format");
             ex.printStackTrace();
-        } catch (IOException ex) {
-            System.err.println("Can not create server");
-            ex.printStackTrace();
-            System.exit(1);
         }
     }
 }

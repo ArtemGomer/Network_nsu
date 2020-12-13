@@ -11,23 +11,30 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.Iterator;
 
 public class Server implements Runnable, Closeable {
-    private final Selector selector;
-    private final ServerSocketChannel serverSocketChannel;
-    private final ResolveAttachment resolveAttachment;
+    private Selector selector;
+    private ServerSocketChannel serverSocketChannel;
+    private ResolveAttachment resolveAttachment;
+    private DatagramChannel resolverSocket;
 
-    public Server(int port) throws IOException {
-        serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.bind(new InetSocketAddress(InetAddress.getByName("localhost"), port));
-        System.out.println(port);
-        selector = SelectorProvider.provider().openSelector();
-        serverSocketChannel.configureBlocking(false);
-        serverSocketChannel.register(selector, serverSocketChannel.validOps(), new BasicAttachment());
+    public Server(int port) {
+        try {
+            serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(new InetSocketAddress(InetAddress.getByName("localhost"), port));
+            System.out.println(port);
+            selector = SelectorProvider.provider().openSelector();
+            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.register(selector, serverSocketChannel.validOps(), new BasicAttachment());
 
-        DatagramChannel resolverSocket = DatagramChannel.open();
-        resolverSocket.configureBlocking(false);
-        SelectionKey resolverKey = resolverSocket.register(selector, 0);
-        resolveAttachment = new ResolveAttachment(resolverKey);
-        resolverKey.attach(resolveAttachment);
+            resolverSocket = DatagramChannel.open();
+            resolverSocket.configureBlocking(false);
+            SelectionKey resolverKey = resolverSocket.register(selector, 0);
+            resolveAttachment = new ResolveAttachment(resolverKey);
+            resolverKey.attach(resolveAttachment);
+        } catch (IOException ex) {
+            System.err.println("Can not create server");
+            ex.printStackTrace();
+            close();
+        }
     }
 
     @Override
@@ -72,11 +79,7 @@ public class Server implements Runnable, Closeable {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            try {
-                close();
-            } catch (IOException exs) {
-                exs.printStackTrace();
-            }
+            close();
         }
     }
 
@@ -124,7 +127,16 @@ public class Server implements Runnable, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        serverSocketChannel.close();
+    public void close() {
+        try {
+            if (serverSocketChannel != null) {
+                serverSocketChannel.close();
+            }
+            if (resolverSocket != null) {
+                resolverSocket.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
